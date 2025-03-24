@@ -1,19 +1,15 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-// Create S3 bucket for website hosting
-const siteBucket = new aws.s3.Bucket("siteBucket", {
-    website: {
-        indexDocument: "index.html",
-    },
-});
 
-// Upload an index.html file
-new aws.s3.BucketObject("index", {
-    bucket: siteBucket,
+const bucket = new aws.s3.Bucket("myBucket");
+
+const indexObject = new aws.s3.BucketObject("index", {
+    bucket: bucket.bucket,  // Don't hardcode
     source: new pulumi.asset.FileAsset("index.html"),
     contentType: "text/html",
 });
+
 
 // CloudFront Origin Access Identity (OAI) to restrict direct access to S3
 const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity("oai");
