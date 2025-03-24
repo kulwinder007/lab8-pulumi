@@ -12,7 +12,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
+    - name: test credentials
+      run: echo $AWS_ACCESS_KEY_ID
+           echo $AWS_SECRET_ACCESS_KEY
     - name: Set up AWS credentials using OIDC
       uses: aws-actions/configure-aws-credentials@v1
       with:
