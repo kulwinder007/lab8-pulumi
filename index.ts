@@ -11,8 +11,10 @@ const indexObject = new aws.s3.BucketObject("index", {
     contentType: "text/html",
 });
 
-// ✅ Create a CloudFront Origin Access Identity (OAI)
-const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity("oai");
+// ✅ Create a new CloudFront Origin Access Identity (OAI) if needed
+const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity("oai", {
+    comment: "My Origin Access Identity for S3 bucket access",
+});
 
 // ✅ Create a CloudFront distribution for the S3 bucket
 const cdn = new aws.cloudfront.Distribution("cdn", {
@@ -21,7 +23,7 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
             domainName: siteBucket.bucketRegionalDomainName,
             originId: "s3-origin",
             s3OriginConfig: { 
-                originAccessIdentity: `origin-access-identity/cloudfront/${originAccessIdentity.id}` // ✅ Corrected OAI reference
+                originAccessIdentity: `origin-access-identity/cloudfront/${originAccessIdentity.id}`, // ✅ Corrected OAI reference
             },
         },
     ],
