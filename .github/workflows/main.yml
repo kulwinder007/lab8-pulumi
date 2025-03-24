@@ -19,15 +19,8 @@ jobs:
         role-to-assume: arn:aws:iam::484907508139:role/GitHubActionsOIDC
         aws-region: us-east-1
 
-<<<<<<< HEAD
       - name: Install dependencies
         run: npm install
-
-      - name: Configure AWS Credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::484907508139:role/GitHubActionsOIDC
-          aws-region: us-east-1
 
       - name: Set up Pulumi
         uses: pulumi/actions@v3
@@ -36,13 +29,3 @@ jobs:
           stack-name: dev
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-=======
-    - name: Install dependencies
-      run: |
-        npm install
-        npx pulumi stack select dev
->>>>>>> 573ebe2f7634dfea125967344f4ecee5cb8bcdd0
-
-    - name: Deploy with Pulumi
-      run: |
-        npx pulumi up --yes
