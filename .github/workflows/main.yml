@@ -1,42 +1,30 @@
 name: Deploy to AWS
-
+ 
 on:
   push:
     branches:
       - main
-
-
+ 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+ 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: Set up AWS credentials using OIDC
-      uses: aws-actions/configure-aws-credentials@v1
+ 
+    - name: Configure AWS credentials using OIDC
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: arn:aws:iam::484907508139:role/GitHubActionsOIDC
         aws-region: us-east-1
-        audience: sts.amazonaws.com
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-    - name: Assume Role with GitHub OIDC Token
-      run: |
-        # Get the OIDC token from GitHub Actions
-        OIDC_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-        
-        # Use AWS CLI to assume the role using the OIDC token
-        aws sts assume-role-with-web-identity \
-          --role-arn arn:aws:iam::484907508139:role/GitHubActionsOIDC \
-          --role-session-name GitHubOIDCSession \
-          --web-identity-token $OIDC_TOKEN
-        
+ 
+    - name: Verify AWS authentication
+      run: aws sts get-caller-identity
+ 
     - name: Install dependencies
       run: npm install
-
+ 
     - name: Set up Pulumi
       uses: pulumi/actions@v3
       with:
@@ -44,5 +32,4 @@ jobs:
         stack-name: dev
       env:
         PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ROLE_ARN: arn:aws:iam::688567283850:user/lab8
