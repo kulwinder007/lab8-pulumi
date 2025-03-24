@@ -22,7 +22,7 @@ const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity("oai");
 const cdn = new aws.cloudfront.Distribution("cdn", {
     origins: [
         {
-            domainName: siteBucket.websiteEndpoint.apply(ep => ep.replace("http://", "")), // Remove "http://"
+            domainName: siteBucket.bucketRegionalDomainName,
             originId: "s3-origin",
             s3OriginConfig: { originAccessIdentity: originAccessIdentity.cloudfrontAccessIdentityPath },
         },
