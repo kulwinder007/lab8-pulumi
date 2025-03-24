@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-// ✅ Create an S3 bucket to host the static website
+// Create an S3 bucket to host the static website
 const siteBucket = new aws.s3.Bucket("myBucket");
 
 // ✅ Upload index.html to the bucket
