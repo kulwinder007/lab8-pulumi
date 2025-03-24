@@ -1,2 +1,2 @@
-config:
-  aws:region: us-east-1
+environment:
+  - Kulwinder-lab08-pulumi/dev
