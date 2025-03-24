@@ -13,9 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: test credentials
-      run: echo 
-            TOKENN="${{ secrets.$AWS_ACCESS_KEY_ID }}"
-           echo TOKENN
+      run: 
+        TOKENN="${{ secrets.AWS_ACCESS_KEY_ID }}"
+        echo TOKENN
     - name: Set up AWS credentials using OIDC
       uses: aws-actions/configure-aws-credentials@v1
       with:
