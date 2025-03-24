@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-// Creating S3 bucket for website hosting
+// Create S3 bucket for website hosting
 const siteBucket = new aws.s3.Bucket("siteBucket", {
     website: {
         indexDocument: "index.html",
