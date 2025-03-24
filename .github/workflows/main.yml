@@ -1,23 +1,25 @@
-name: Pulumi Deployment with OIDC
+name: Deploy to AWS
 
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+    - name: Set up AWS credentials using OIDC
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::484907508139:role/GitHubActionsOIDC
+        aws-region: us-east-1
 
+<<<<<<< HEAD
       - name: Install dependencies
         run: npm install
 
@@ -34,4 +36,13 @@ jobs:
           stack-name: dev
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+=======
+    - name: Install dependencies
+      run: |
+        npm install
+        npx pulumi stack select dev
+>>>>>>> 573ebe2f7634dfea125967344f4ecee5cb8bcdd0
 
+    - name: Deploy with Pulumi
+      run: |
+        npx pulumi up --yes
