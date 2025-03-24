@@ -3,10 +3,10 @@ name: Pulumi CI/CD
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the 'main' branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger the workflow on a pull request targeting 'main'
+      - main
 
 jobs:
   deploy:
