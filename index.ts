@@ -2,10 +2,10 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
 
-const bucket = new aws.s3.Bucket("myBucket");
+const siteBucket = new aws.s3.Bucket("myBucket");
 
 const indexObject = new aws.s3.BucketObject("index", {
-    bucket: bucket.bucket,  // Don't hardcode
+    bucket: siteBucket.bucket,  // Don't hardcode
     source: new pulumi.asset.FileAsset("index.html"),
     contentType: "text/html",
 });
