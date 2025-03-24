@@ -1,0 +1,10 @@
+name: Kulwinder-lab08-pulumi
+description: Lab 8 of Devops
+runtime:
+  name: nodejs
+  options:
+    packagemanager: npm
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-typescript
