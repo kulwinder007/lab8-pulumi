@@ -4,26 +4,29 @@ import * as aws from "@pulumi/aws";
 // Create an S3 bucket to host the static website
 const siteBucket = new aws.s3.Bucket("myBucket");
 
-// ✅ Upload index.html to the bucket
+// Upload index.html to the bucket
 const indexObject = new aws.s3.BucketObject("index", {
-    bucket: siteBucket.bucket,  // Don't hardcode the bucket name
+    bucket: siteBucket.bucket,  
     source: new pulumi.asset.FileAsset("index.html"),
     contentType: "text/html",
 });
 
-// ✅ Create a new CloudFront Origin Access Identity (OAI) if needed
+// Create a CloudFront Origin Access Identity (OAI)
 const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity("oai", {
-    comment: "My Origin Access Identity for S3 bucket access",
+    comment: "OAI for CloudFront distribution"
 });
 
-// ✅ Create a CloudFront distribution for the S3 bucket
+// Export the OAI ID to verify it
+export const oaiId = originAccessIdentity.id;
+
+// Create a CloudFront distribution for the S3 bucket
 const cdn = new aws.cloudfront.Distribution("cdn", {
     origins: [
         {
             domainName: siteBucket.bucketRegionalDomainName,
             originId: "s3-origin",
             s3OriginConfig: { 
-                originAccessIdentity: `origin-access-identity/cloudfront/${originAccessIdentity.id}`, // ✅ Corrected OAI reference
+                originAccessIdentity: `origin-access-identity/cloudfront/EO9XT3IXYG3ZR` // Use OAI ID correctly
             },
         },
     ],
@@ -49,6 +52,6 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
     },
 });
 
-// ✅ Export bucket name and CloudFront URL
+// Export bucket name and CloudFront URL
 export const bucketName = siteBucket.id;
 export const cdnUrl = cdn.domainName;
